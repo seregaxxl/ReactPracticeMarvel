@@ -23,10 +23,15 @@ class CharList extends Component {
     }
 
     updateChars = () => {
+        this.onCharLoading()
         this.marvelService
             .getAllCharacters()
             .then(this.onCharListLoaded)
-            // .catch(this.onError)
+            .catch(this.onError)
+    }
+
+    onCharLoading = () => {
+        this.setState({loading:true})
     }
 
     onCharListLoaded = (chars) => {
@@ -43,67 +48,40 @@ class CharList extends Component {
         this.setState({loading:false, error: true})
     }
 
+    renderItems(chars) {
+        const elements = chars.map(char => {
+            const {thumbnail, name, id} = char;
+            return (
+                <li className="char__item"
+                key={id}
+                onClick={()=>this.props.onCharSelected(id)}>
+                    <img src={thumbnail} alt={name}/>
+                     <div className="char__name">{name}</div>
+                </li>
+            )
+        })
+        return (
+                <>{elements}</>
+        )
+    }
+
     render () {
-        const {chars} = this.state
-        console.log(chars)
+        const {chars, loading, error} = this.state
+        const items = this.renderItems(chars)
+        const errorMessage = error ? <ErrorMessage /> : null
+        const spiner = loading ? <Spinner /> : null
+        const content = !(error || loading) ? items : null
         return  (
             <div className="char__list">
                 <ul className="char__grid">
-                 <Chars chars={chars} />
+                 {errorMessage} {spiner} {content}
                 </ul>
                 <button className="button button__main button__long">
                     <div className="inner">load more</div>
                 </button>
             </div>
-            // <div />
         ) 
      }
-
 }
-
-
-
-const Chars = ({chars}) => {
-
-    const Char = (char) => {
-        const {name,thumbnail} = char;
-        // const errorMessage = error ? <ErrorMessage /> : null
-        // const spiner = loading ? <Spinner /> : null
-        // const content = !(error || loading) ? <><img src={thumbnail} alt={name}/>
-        // <div className="char__name">{name}</div></> : null
-        
-        return (
-            <li className="char__item">
-                <img src={thumbnail} alt={name}/>
-        <div className="char__name">{name}</div>
-                {/* {errorMessage} {spiner} {content} */}
-            </li>
-        )
-    }
-
-    const elements = chars.map(char => {
-        const {thumbnail, name, id} = char;
-        return <Char
-        thumbnail = {thumbnail}
-        name = {name}
-        key = {id}
-        />
-    })
-
-
-    return (
-        <div className="char__list">
-            <ul className="char__grid">
-                {elements}
-            </ul>
-            <button className="button button__main button__long">
-                <div className="inner">load more</div>
-            </button>
-        </div>
-    )
-}
-
-
-
 
 export default CharList;
