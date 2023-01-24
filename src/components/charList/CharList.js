@@ -19,7 +19,7 @@ class CharList extends Component {
     }
 
     componentDidUpdate() {
-        console.log(this.state.chars)
+
     }
 
     updateChars = () => {
@@ -37,7 +37,8 @@ class CharList extends Component {
     onCharListLoaded = (chars) => {
         this.setState({
             chars,
-            loading: false
+            loading: false,
+            error: false
         })
     }
 
@@ -55,7 +56,7 @@ class CharList extends Component {
                 <li className="char__item"
                 key={id}
                 onClick={()=>this.props.onCharSelected(id)}>
-                    <img src={thumbnail} alt={name}/>
+                    <img src={thumbnail} style={thumbnail === 'http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available.jpg' ? {objectFit:'contain'} : {objectFit:'cover'}} alt={name}/>
                      <div className="char__name">{name}</div>
                 </li>
             )
