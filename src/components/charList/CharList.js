@@ -8,37 +8,52 @@ class CharList extends Component {
 
     state = {
         chars: [],
+        offset: 1548,
         loading: true,
-        error: false       
+        error: false,
+        charEnded: false   
     }
 
     marvelService = new MarvelService();
 
     componentDidMount() {
-        this.updateChars();
+        this.onLoadMoreChars();
     }
 
     componentDidUpdate() {
 
     }
 
-    updateChars = () => {
-        this.onCharLoading()
+
+    onLoadMoreChars = () => {
+        this.onCharLoading()    
         this.marvelService
-            .getAllCharacters()
+            .getAllCharacters(this.state.offset)
             .then(this.onCharListLoaded)
             .catch(this.onError)
     }
+
+    // onNewCharLoading = () => {
+    //     this.setState({newItemLoading:true})
+    // }
 
     onCharLoading = () => {
         this.setState({loading:true})
     }
 
-    onCharListLoaded = (chars) => {
+    onCharListLoaded = (newChars) => {
+        let ended = false;
+
+        if(newChars.length < 9) {
+            ended = true
+        }
+
         this.setState({
-            chars,
+            chars: [...this.state.chars, ...newChars],
             loading: false,
-            error: false
+            error: false,
+            offset:(this.state.offset + 9),
+            charEnded: ended
         })
     }
 
@@ -77,7 +92,8 @@ class CharList extends Component {
                 <ul className="char__grid">
                  {errorMessage} {spiner} {content}
                 </ul>
-                <button className="button button__main button__long">
+                <button onClick={this.onLoadMoreChars} className="button button__main button__long" style={this.state.newItemLoading || this.state.charEnded ? {display: "none"} : {display:"block"}}>
+                
                     <div className="inner">load more</div>
                 </button>
             </div>
