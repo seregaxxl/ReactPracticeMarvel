@@ -11,7 +11,8 @@ class CharList extends Component {
         offset: 1548,
         loading: true,
         error: false,
-        charEnded: false   
+        charEnded: false,
+        charClasses: 'char__item'   
     }
 
     marvelService = new MarvelService();
@@ -57,6 +58,19 @@ class CharList extends Component {
         })
     }
 
+    itemRefs = [];
+
+    setRef = (ref) => {
+        this.itemRefs.push(ref);
+    }
+
+    highlightSelected = (id) => {
+        this.itemRefs.forEach(item => item.classList.remove('char__item_selected'));
+        console.log(this.itemRefs);
+        this.itemRefs[id].classList.add('char__item_selected');
+
+    }
+
 
 
 
@@ -65,12 +79,18 @@ class CharList extends Component {
     }
 
     renderItems(chars) {
-        const elements = chars.map(char => {
+        const elements = chars.map((char, i) => {
             const {thumbnail, name, id} = char;
             return (
-                <li className="char__item"
+                <li className='char__item'
+                tabIndex = "0"
+                ref={this.setRef}
                 key={id}
-                onClick={()=>this.props.onCharSelected(id)}>
+                onFocus={console.log(1)}
+                onClick={()=>{
+                    this.props.onCharSelected(id)
+                    this.highlightSelected(i)
+                }}>
                     <img src={thumbnail} style={thumbnail === 'http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available.jpg' ? {objectFit:'contain'} : {objectFit:'cover'}} alt={name}/>
                      <div className="char__name">{name}</div>
                 </li>
