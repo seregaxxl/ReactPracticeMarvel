@@ -64,12 +64,12 @@ class CharList extends Component {
         this.itemRefs.push(ref);
     }
 
-    highlightSelected = (id) => {
-        this.itemRefs.forEach(item => item.classList.remove('char__item_selected'));
-        console.log(this.itemRefs);
-        this.itemRefs[id].classList.add('char__item_selected');
+    // highlightSelected = (id) => {
+    //     this.itemRefs.forEach(item => item.classList.remove('char__item_selected'));
+    //     console.log(this.itemRefs);
+    //     this.itemRefs[id].classList.add('char__item_selected');
 
-    }
+    // }
 
 
 
@@ -88,7 +88,7 @@ class CharList extends Component {
                 key={id}
                 onClick={()=>{
                     this.props.onCharSelected(id)
-                    this.highlightSelected(i)
+                    // this.highlightSelected(i)
                 }}>
                     <img src={thumbnail} style={thumbnail === 'http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available.jpg' ? {objectFit:'contain'} : {objectFit:'cover'}} alt={name}/>
                      <div className="char__name">{name}</div>
