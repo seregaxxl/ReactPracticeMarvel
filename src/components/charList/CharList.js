@@ -8,7 +8,7 @@ class CharList extends Component {
 
     state = {
         chars: [],
-        offset: 1548,
+        offset: 0,
         loading: true,
         error: false,
         charEnded: false,
@@ -86,7 +86,6 @@ class CharList extends Component {
                 tabIndex = "0"
                 ref={this.setRef}
                 key={id}
-                onFocus={console.log(1)}
                 onClick={()=>{
                     this.props.onCharSelected(id)
                     this.highlightSelected(i)
@@ -112,7 +111,7 @@ class CharList extends Component {
                 <ul className="char__grid">
                  {errorMessage} {spiner} {content}
                 </ul>
-                <button onClick={this.onLoadMoreChars} className="button button__main button__long" style={this.state.newItemLoading || this.state.charEnded ? {display: "none"} : {display:"block"}}>
+                <button onClick={this.onLoadMoreChars} className="button button__main button__long" style={this.state.loading || this.state.charEnded ? {display: "none"} : {display:"block"}}>
                 
                     <div className="inner">load more</div>
                 </button>
