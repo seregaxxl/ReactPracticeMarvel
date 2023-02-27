@@ -1,70 +1,46 @@
 import './charInfo.scss';
 import thor from '../../resources/img/thor.jpeg';
-import MarvelService from '../../services/MarvelService';
+import { useEffect, useState } from 'react';
+import useMarvelService from '../../services/MarvelService';
 import Spinner from '../spinner/Spinner';
 import ErrorMessage from '../errorMessage/ErrorMessage';
 import Skeleton from '../skeleton/Skeleton';
 import PropTypes from 'prop-types';
-import { Component } from 'react';
 
-class CharInfo extends Component {
-    state = {
-        char:null,
-        loading: false,
-        error: false
-    }
+const CharInfo = (props) => {
+    const [char, setChar] = useState({});
 
-    marvelService = new MarvelService;
+    const {loading, error, getCharacter, clearError} = useMarvelService();
 
-    componentDidMount() {
-        this.updateChar();
-    }
+    useEffect(() => {
+        updateChar()
+    },[props.charId])
 
-    componentDidUpdate(prevProps, prevState) {
-        if(this.props.charId !== prevProps.charId) {
-            this.updateChar(); 
-        }
-
-    }
-
-
-    onCharLoading = () => {
-        this.setState({loading:true})
-    }
-
-    
-    onError = () => {
-        this.setState({loading:false, error: true})
-    }
-    
-    onCharLoaded = (char) => {
-        this.setState({char, loading:false, error: false})
-    }
-
-    updateChar = () => {
-        const {charId} = this.props;
+    const updateChar = () => {
+        clearError();
+        const {charId} = props;
         if(!charId) {
             return;
         }
-        this.onCharLoading()
-        this.marvelService.getCharacter(charId)
-            .then(this.onCharLoaded)
-            .catch(this.onError)
+        getCharacter(charId)
+            .then(onCharLoaded)
     }
 
-    render() {
-        const {char, loading, error} = this.state;
-
-        const skeleton = char || loading || error ? null : <Skeleton />
-        const errorMessage = error ? <ErrorMessage /> : null
-        const spiner = loading ? <Spinner /> : null
-        const content = !(error || loading || !char) ? <View char={char} /> : null
-        return (
-            <div className="char__info">
-                {skeleton} {errorMessage} {spiner} {content}
-            </div>
-        )
+    const onCharLoaded = (char) => {
+        setChar(char);
+        console.log(char)
     }
+
+    const skeleton = char.name || loading || error ? null : <Skeleton />
+    const errorMessage = error ? <ErrorMessage /> : null
+    const spiner = loading ? <Spinner /> : null
+    const content = !(error || loading || !char.name) ?  <View char={char} /> : null
+
+    return (
+        <div className="char__info">
+            {skeleton} {errorMessage} {spiner} {content}
+        </div>
+    )
 }
 
 const View = ({char}) => {
@@ -90,26 +66,19 @@ const View = ({char}) => {
             </div>
             <div className="char__comics">Comics:</div>
             <ul className="char__comics-list">
-                {
-                comics
-                .filter((item, i) => {
-                    if(i < 10) {
-                        return item
-                    }
-                })
-                .map((item, i) => {
-                    return (
-                        <li className="char__comics-item" key={i}>
-                        {item.name}
-                    </li>
-                    )
-                })
-                }
-                {comics.length > 0 ? null : (<li className="char__comics-item" key={0}>
-                        There is no information about comics with this char
-                    </li>)
-                }
-
+            {comics && comics.length > 0  ? null : 'There is no comics with this character'}
+                {comics ? (
+                    comics.map((item, i) => {
+                        // eslint-disable-next-line
+                        if (i > 9) return;
+                        return (
+                            <li key={i} className="char__comics-item">
+                                {item.name}
+                            </li>
+                        )
+                    })
+                ) : null }
+                                  
             </ul>
     </>
     )
