@@ -4,6 +4,7 @@ import CharList from "../charList/CharList";
 import CharInfo from "../charInfo/CharInfo";
 import ErrorBoundary from "../errorBoundary/errorBoundary";
 import { useState } from "react";
+import Comics from "../comics/comics"
 
 import decoration from '../../resources/img/vision.png';
 
@@ -18,6 +19,19 @@ const App = () => {
     const onCharSelected = (id) => {
         setChar(id);
     }
+
+    if (window.location.pathname === '/comics') {
+        return (
+            <div className="app">
+                <AppHeader/>
+                <main>
+                    <ErrorBoundary>
+                        <Comics/>  
+                    </ErrorBoundary>
+                </main>
+            </div>
+        )
+      }
 
     return (
         <div className="app">
