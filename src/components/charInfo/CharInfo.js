@@ -1,5 +1,4 @@
 import './charInfo.scss';
-import thor from '../../resources/img/thor.jpeg';
 import { useEffect, useState } from 'react';
 import useMarvelService from '../../services/MarvelService';
 import Spinner from '../spinner/Spinner';

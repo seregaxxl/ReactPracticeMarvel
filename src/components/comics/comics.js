@@ -39,12 +39,13 @@ const Comics = () => {
         const elements = comics.map((comic, i) => {
             const {thumbnail, title, id, price} = comic;
             return (
-                <li className='comic__item'
+                <li className='comics__item'
                 tabIndex = "0"
                 key={id}
                 >
                     <img src={thumbnail} style={thumbnail === 'http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available.jpg' ? {objectFit:'contain'} : {objectFit:'cover'}} alt={title}/>
                      <div className="comics__title">{title}</div>
+                     <div className="comics__price">{price ? price + '$' : 'NOT AVAILABLE'}</div>
                 </li>
             )
         })

@@ -2,7 +2,7 @@ import './charList.scss';
 import useMarvelService from '../../services/MarvelService';
 import ErrorMessage from '../errorMessage/ErrorMessage';
 import Spinner from '../spinner/Spinner';
-import { useState, useRef, useEffect } from 'react';
+import { useState, useLayoutEffect , useEffect } from 'react';
 
 const CharList = (props) => {
     const [chars, setChars] = useState([]);
@@ -14,7 +14,7 @@ const CharList = (props) => {
 
 
     useEffect(() => {
-        onLoadMoreChars(offset, true)
+        onLoadMoreChars(offset, true);
     },[])
 
     const onLoadMoreChars = (offset, initial) => {
@@ -34,16 +34,8 @@ const CharList = (props) => {
         setnewItemLoading(false);
     }
 
-    const itemRefs = useRef([]);
+    // const itemRefs = useRef([]);
 
-
-
-    // const highlightSelected = (id) => {
-    //     itemRefs.current.forEach(item => item.classList.remove('char__item_selected'));
-    //     itemRefs.current[id].classList.add('char__item_selected');
-    //     itemRefs.current[id].focus();
-
-    // }
 
     function renderItems(chars) {
         const elements = chars.map((char, i) => {
@@ -51,13 +43,12 @@ const CharList = (props) => {
             return (
                 <li className='char__item'
                 tabIndex = "0"
-                ref={el => {
-                    itemRefs.current[i] = el;
-                }}
+                // ref={el => {
+                //     itemRefs.current[i] = el;
+                // }}
                 key={id}
                 onClick={()=>{
                     props.onCharSelected(id)
-                    // highlightSelected(i)
                 }}>
                     <img src={thumbnail} style={thumbnail === 'http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available.jpg' ? {objectFit:'contain'} : {objectFit:'cover'}} alt={name}/>
                      <div className="char__name">{name}</div>
