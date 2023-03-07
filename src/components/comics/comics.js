@@ -3,7 +3,8 @@ import banner from '../../resources/img/Banner.png'
 import useMarvelService from '../../services/MarvelService';
 import ErrorMessage from '../errorMessage/ErrorMessage';
 import Spinner from '../spinner/Spinner';
-import { useState, useRef, useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import { useState, useEffect } from 'react';
 
 const Comics = () => {
 
@@ -43,9 +44,11 @@ const Comics = () => {
                 tabIndex = "0"
                 key={id}
                 >
-                    <img src={thumbnail} style={thumbnail === 'http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available.jpg' ? {objectFit:'contain'} : {objectFit:'cover'}} alt={title}/>
-                     <div className="comics__title">{title}</div>
-                     <div className="comics__price">{price ? price + '$' : 'NOT AVAILABLE'}</div>
+                    <Link to={`/comics/${comic.id}`}>
+                        <img src={thumbnail} style={thumbnail === 'http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available.jpg' ? {objectFit:'contain'} : {objectFit:'cover'}} alt={title}/>
+                        <div className="comics__title">{title}</div>
+                        <div className="comics__price">{price ? price + '$' : 'NOT AVAILABLE'}</div>
+                    </Link>
                 </li>
             )
         })

@@ -27,7 +27,6 @@ const CharInfo = (props) => {
 
     const onCharLoaded = (char) => {
         setChar(char);
-        console.log(char)
     }
 
     const skeleton = char.name || loading || error ? null : <Skeleton />
