@@ -39,6 +39,7 @@ const useMarvelService = () => {
     }
 
     const _transformComics = (comics) => {
+        console.log(comics.textObjects[0])
         return {
             title:comics.title,
             description:comics.description,
@@ -47,7 +48,7 @@ const useMarvelService = () => {
             id:comics.id,
             price:comics.prices[0].price,
             pageCount: comics.pageCount,
-            language: comics.textObjects[0].language
+            language: comics.textObjects && comics.textObjects.length > 0 && comics.textObjects[0].language ? comics.textObjects[0].language : null
         }
     }
 
