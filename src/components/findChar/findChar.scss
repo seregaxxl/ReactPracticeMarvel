@@ -31,4 +31,31 @@
         column-gap: 24px;
         grid-auto-flow: row dense;
      }
+     .error {
+         margin-top: 25px;
+         font-family: 'Roboto Condensed';
+         font-style: normal;
+         font-weight: 700;
+         font-size: 18px;
+         line-height: 21px;
+         color: #9F0013;
+     }
+     .found {
+         margin-top: 22px;
+         font-family: 'Roboto Condensed';
+         font-style: normal;
+         font-weight: 700;
+         font-size: 18px;
+         line-height: 21px;
+         color: #03710E;
+     }
+     .not-found {
+      font-family: 'Roboto Condensed';
+      font-style: normal;
+      font-weight: 700;
+      font-size: 18px;
+      line-height: 21px;
+      color: #9F0013;
+      margin-top: 22px;
+     }
 }

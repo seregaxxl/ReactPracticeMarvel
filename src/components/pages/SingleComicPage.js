@@ -4,8 +4,7 @@ import { useEffect, useState } from 'react';
 import useMarvelService from '../../services/MarvelService';
 import Spinner from '../spinner/Spinner';
 import ErrorMessage from '../errorMessage/ErrorMessage';
-import Skeleton from '../skeleton/Skeleton';
-import PropTypes from 'prop-types';
+import banner from '../../resources/img/Banner.png'
 
 const SingleComic = () => {
     const [comic, setComic] = useState({});
@@ -35,6 +34,7 @@ const SingleComic = () => {
 
     return (
         <div className="comic__info">
+            <img src={banner} alt="avengers banner" className="banner"/>
             {errorMessage} {spiner} {content}
         </div>
     )
@@ -44,7 +44,7 @@ const SingleComic = () => {
 const View = ({comic}) => {
     const {thumbnail, title, description, pageCount, price, language} = comic;
     return (
-        <div className="single-comic">
+        <div className="single-comic"> 
             <img src={thumbnail} alt="x-men" className="single-comic__img"/>
             <div className="single-comic__info">
                 <h2 className="single-comic__name">{title}</h2>
