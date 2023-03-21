@@ -5,6 +5,7 @@ import Spinner from '../spinner/Spinner';
 import ErrorMessage from '../errorMessage/ErrorMessage';
 import Skeleton from '../skeleton/Skeleton';
 import PropTypes from 'prop-types';
+import FindChar from '../findChar/findChar';
 
 const CharInfo = (props) => {
     const [char, setChar] = useState({});
@@ -35,8 +36,11 @@ const CharInfo = (props) => {
     const content = !(error || loading || !char.name) ?  <View char={char} /> : null
 
     return (
-        <div className="char__info">
-            {skeleton} {errorMessage} {spiner} {content}
+        <div className='sticky'>
+            <div className="char__info">
+                {skeleton} {errorMessage} {spiner} {content}
+            </div>
+            <FindChar/>
         </div>
     )
 }
