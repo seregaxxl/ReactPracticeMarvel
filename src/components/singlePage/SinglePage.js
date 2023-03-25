@@ -5,6 +5,7 @@ import useMarvelService from '../../services/MarvelService';
 import Spinner from '../spinner/Spinner';
 import ErrorMessage from '../errorMessage/ErrorMessage';
 import banner from '../../resources/img/Banner.png'
+import {Helmet} from "react-helmet";
 
 const SinglePage = ({dataType}) => {
     const [data, setdata] = useState({});
@@ -43,10 +44,17 @@ const SinglePage = ({dataType}) => {
     const content = !(error || loading ) ?  <View data={data} /> : null
 
     return (
-        <div className="char__info">
+        <>
+            <Helmet>
+                <meta name="description" content={"Page with information about" + {dataType}}/>
+                <title>{dataType} page</title>
+            </Helmet>
+            <div className="char__info">
             <img src={banner} alt="avengers banner" className="banner"/>
             {errorMessage} {spiner} {content}
         </div>
+        </>
+
     )
     
 }
