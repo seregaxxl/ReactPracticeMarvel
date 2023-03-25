@@ -1,15 +1,14 @@
 import './singlePage.scss';
 import { useParams, Link } from 'react-router-dom';
 import { useEffect, useState } from 'react';
+import setContent from '../../utils/setContent';
 import useMarvelService from '../../services/MarvelService';
-import Spinner from '../spinner/Spinner';
-import ErrorMessage from '../errorMessage/ErrorMessage';
 import banner from '../../resources/img/Banner.png'
 import {Helmet} from "react-helmet";
 
 const SinglePage = ({dataType}) => {
     const [data, setdata] = useState({});
-    const {loading, error, getCharByName, getComic, clearError} = useMarvelService();
+    const {getCharByName, getComic, clearError, process, setProcess} = useMarvelService();
     let {id} = useParams();
 
     useEffect(() => {
@@ -26,10 +25,12 @@ const SinglePage = ({dataType}) => {
             case 'comic':
                 getComic(id)
                     .then(onDataLoaded)
+                    .then(() => {setProcess('confirmed')})
                 break
             case 'char':
                 getCharByName(id)
                     .then(onDataLoaded)
+                    .then(() => {setProcess('confirmed')})
                 break
         }
 
@@ -39,9 +40,6 @@ const SinglePage = ({dataType}) => {
         setdata(data);
     }
 
-    const errorMessage = error ? <ErrorMessage /> : null
-    const spiner = loading ? <Spinner /> : null
-    const content = !(error || loading ) ?  <View data={data} /> : null
 
     return (
         <>
@@ -51,7 +49,7 @@ const SinglePage = ({dataType}) => {
             </Helmet>
             <div className="char__info">
             <img src={banner} alt="avengers banner" className="banner"/>
-            {errorMessage} {spiner} {content}
+            {setContent(process, View, data)}
         </div>
         </>
 

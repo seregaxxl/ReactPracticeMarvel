@@ -6,6 +6,26 @@ import Spinner from '../spinner/Spinner';
 import { Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 
+const setContent = (process, Component, newItemLoading) => {
+    switch (process) { 
+        case 'waiting':
+            return <Spinner />
+            break
+        case 'loading':
+            return newItemLoading ? <Component/> : <Spinner />
+            break
+        case 'error':
+            return <ErrorMessage />
+            break
+        case 'confirmed':
+            return <Component/>
+            break
+        default :
+            throw new Error('Unexpected case');
+            break
+    }
+}
+
 const Comics = () => {
 
     const [comics, setComics] = useState([]);
@@ -13,7 +33,7 @@ const Comics = () => {
     const [newItemLoading, setnewItemLoading] = useState(false);
     const [comicsEnded, setComicsEnded] = useState(false);
 
-    const {loading, error, getAllComics} = useMarvelService();
+    const {loading, error, getAllComics, process, setProcess} = useMarvelService();
 
     useEffect(() => {
         onLoadMoreComics(offset, true)
@@ -23,6 +43,7 @@ const Comics = () => {
         initial ? setnewItemLoading(false) : setnewItemLoading(true);
         getAllComics(offset)
             .then(onComicsListLoaded)
+            .then(()=>{setProcess('confirmed')})
     }
 
     const onComicsListLoaded = (newComics) => {
@@ -57,14 +78,11 @@ const Comics = () => {
         )
     }
 
-    const items = renderItems(comics)
-    const errorMessage = error ? <ErrorMessage /> : null
-    const spiner = loading && !newItemLoading  ? <Spinner /> : null
     return  (
         <div className="comics__list">
             <img src={banner} alt="avengers banner" className="banner"/>
             <ul className="comics__grid">
-                {errorMessage} {spiner} {items}
+            {setContent(process,()=>renderItems(comics),newItemLoading)}
             </ul>
             <button onClick={() => {onLoadMoreComics(offset)}} className="button button__main button__long" style={loading || comicsEnded || newItemLoading  ? {display: "none"} : {display:"block"}}>
             

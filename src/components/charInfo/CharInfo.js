@@ -1,52 +1,46 @@
 import './charInfo.scss';
 import { useEffect, useState } from 'react';
 import useMarvelService from '../../services/MarvelService';
-import Spinner from '../spinner/Spinner';
-import ErrorMessage from '../errorMessage/ErrorMessage';
-import Skeleton from '../skeleton/Skeleton';
+import setContent from '../../utils/setContent';
 import PropTypes from 'prop-types';
 import FindChar from '../findChar/findChar';
 
 const CharInfo = (props) => {
     const [char, setChar] = useState({});
 
-    const {loading, error, getCharacter, clearError} = useMarvelService();
+    const {getCharacter, clearError, process, setProcess} = useMarvelService();
 
     useEffect(() => {
         updateChar()
     },[props.charId])
 
     const updateChar = () => {
-        clearError();
         const {charId} = props;
         if(!charId) {
             return;
         }
+        clearError();
         getCharacter(charId)
             .then(onCharLoaded)
+            .then(() => {setProcess('confirmed')})
     }
 
     const onCharLoaded = (char) => {
         setChar(char);
     }
 
-    const skeleton = char.name || loading || error ? null : <Skeleton />
-    const errorMessage = error ? <ErrorMessage /> : null
-    const spiner = loading ? <Spinner /> : null
-    const content = !(error || loading || !char.name) ?  <View char={char} /> : null
-
     return (
         <div className='sticky'>
             <div className="char__info">
-                {skeleton} {errorMessage} {spiner} {content}
+                {setContent(process, View, char)}
             </div>
             <FindChar/>
         </div>
     )
 }
 
-const View = ({char}) => {
-    const {name, description, thumbnail, homepage, wiki, comics} = char;
+const View = ({data}) => {
+    const {name, description, thumbnail, homepage, wiki, comics} = data;
     return (
         <>
         <div className="char__basics">
