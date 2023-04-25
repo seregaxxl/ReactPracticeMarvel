@@ -2,7 +2,7 @@ import './charList.scss';
 import useMarvelService from '../../services/MarvelService';
 import Spinner from '../spinner/Spinner';
 import ErrorMessage from '../errorMessage/ErrorMessage';
-import { useState, useLayoutEffect , useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 
 const setContent = (process, Component, newItemLoading) => {
@@ -31,7 +31,7 @@ const CharList = (props) => {
     const [newItemLoading, setnewItemLoading] = useState(false);
     const [charEnded, setCharEnded] = useState(false);
 
-    const {loading, error, getAllCharacters, process, setProcess} = useMarvelService();
+    const {loading, getAllCharacters, process, setProcess} = useMarvelService();
 
 
     useEffect(() => {
@@ -93,9 +93,13 @@ const CharList = (props) => {
         )
     }
 
+    const elements = useMemo(() => {
+        return setContent(process,()=>renderItems(chars),newItemLoading)
+    }, [process])
+
     return  (
         <div className="char__list">
-                {setContent(process,()=>renderItems(chars),newItemLoading)}
+                {elements}
             <button onClick={() => {onLoadMoreChars(offset)}} className="button button__main button__long" style={loading || charEnded || newItemLoading  ? {display: "none"} : {display:"block"}}>
             
                 <div className="inner">load more</div>

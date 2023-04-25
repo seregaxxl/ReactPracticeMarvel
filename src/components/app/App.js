@@ -21,10 +21,10 @@ const App = () => {
                 <main>
                     <Suspense fallback={Spinner}>
                         <Routes>
-                            <Route path='/comics' element={<ComicsPage/>}/>
-                            <Route path='/comics/:id' element={<SinglePage dataType={'comic'}/>}/>
-                            <Route path='/' element={<MainPage/>}/>
-                            <Route path='/chars/:id' element={<SinglePage dataType={'char'}/>}/>
+                            <Route path='/marvel/comics' element={<ComicsPage/>}/>
+                            <Route path='/marvel/comics/:id' element={<SinglePage dataType={'comic'}/>}/>
+                            <Route path='/marvel/' element={<MainPage/>}/>
+                            <Route path='/marvel/chars/:id' element={<SinglePage dataType={'char'}/>}/>
                             
                             <Route path='*' element={<Page404/>}/>
                         </Routes>
